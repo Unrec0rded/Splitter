@@ -35,7 +35,7 @@ namespace Splitter
                 description: "Take all items if remaining quantity is below split step size. If false, the maximum stuck items are multiples of 5.(default: true)");
 
             MelonPreferences.CreateEntry("Splitter", "OneByOne", true,
-                description: "If ConsumeAllIfBelowStep And OneByOne is true, take all items one by one. if ConsumeAllIfBelowStep true and OneByOne false, take all items at once (default: true)");
+                description: "If ConsumeAllIfBelowStep And OneByOne is true, take all remaining items one by one. if ConsumeAllIfBelowStep true and OneByOne false, take all remaining items at once (default: true)");
 
             SplitStep = MelonPreferences.GetEntry<int>("Splitter", "SplitStep").Value;
             RoundUp = MelonPreferences.GetEntry<bool>("Splitter", "RoundUp").Value;
