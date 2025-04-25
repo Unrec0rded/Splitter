@@ -1,7 +1,7 @@
 ﻿using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(Splitter.Core), "Splitter", "1.5.0", "Sinner2001", null)]
+[assembly: MelonInfo(typeof(Splitter.Core), "Splitter", "1.5", "Sinner2001", null)]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
 namespace Splitter
@@ -13,7 +13,7 @@ namespace Splitter
         public static bool RoundUp = true;
         // public static bool EnableDebugLogs = true;
         public static bool ConsumeAllIfBelowStep = true;
-        public static bool OneByOne = true;
+        public static bool OneByOne = false;
 
         public override void OnInitializeMelon()
         {
@@ -34,8 +34,8 @@ namespace Splitter
             MelonPreferences.CreateEntry("Splitter", "ConsumeAllIfBelowStep", true,
                 description: "Take all items if remaining quantity is below split step size. If false, the maximum stuck items are multiples of 5.(default: true)");
 
-            MelonPreferences.CreateEntry("Splitter", "OneByOne", true,
-                description: "If ConsumeAllIfBelowStep And OneByOne is true, take all remaining items one by one. if ConsumeAllIfBelowStep true and OneByOne false, take all remaining items at once (default: true)");
+            MelonPreferences.CreateEntry("Splitter", "OneByOne", false,
+                description: "If ConsumeAllIfBelowStep And OneByOne is true, take all remaining items one by one. if ConsumeAllIfBelowStep true and OneByOne false, take all remaining items at once (default: false)");
 
             SplitStep = MelonPreferences.GetEntry<int>("Splitter", "SplitStep").Value;
             RoundUp = MelonPreferences.GetEntry<bool>("Splitter", "RoundUp").Value;

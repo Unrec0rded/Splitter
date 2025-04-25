@@ -135,7 +135,7 @@ namespace Splitter
 
         public StackSplitPatch()
         {
-            Logger = new MelonLogger.Instance("Splitter");
+            // Logger = new MelonLogger.Instance("Splitter");
         }
 
         private static ItemSlot leftClickCachedSlot;
@@ -143,6 +143,6 @@ namespace Splitter
         private static ItemSlot wheelCachedSlot;
         private static bool wheelRightClickHeld;
         
-        private static MelonLogger.Instance Logger;
+        // private static MelonLogger.Instance Logger;
     }
 }
