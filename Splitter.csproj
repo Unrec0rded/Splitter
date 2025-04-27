@@ -461,8 +461,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="Core.cs" />
-		<Compile Include="StackSplitPatch.cs" />
+		<Compile Include="*.cs" />
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">

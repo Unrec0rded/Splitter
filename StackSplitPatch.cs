@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Il2CppScheduleOne.ItemFramework;
 using Il2CppScheduleOne.Persistence.Datas;
+using Il2CppScheduleOne.UI;
 using Il2CppScheduleOne.UI.Items;
 using MelonLoader;
 using UnityEngine;
@@ -20,34 +21,33 @@ namespace Splitter
 
         private static void HandleLeftClickSplit(ItemUIManager __instance)
         {
-            leftClickCachedSlot = __instance.HoveredSlot?.assignedSlot;
-            ItemInstance itemInstance = leftClickCachedSlot?.ItemInstance;
-            ItemData itemData = itemInstance?.GetItemData();
-
-            if (Input.GetKey(SplitKey))
+            bool flag = wheelCachedSlot?.ItemInstance?.GetItemData().ID.ToLower() == "cash";
+            if (Input.GetMouseButtonDown(0) && Input.GetKey(SplitKey) && !flag)
             {
-                if (Input.GetMouseButtonDown(0))
-                {       
-                    if (leftClickCachedSlot != null && itemData != null)
-                    {
-                        int newAmount = (itemData.Quantity == 1) ? 1 
-                        : RoundUp 
-                            ? (int)Mathf.Ceil(itemData.Quantity / 2f)
-                            : (int)Mathf.Floor(itemData.Quantity / 2f);
-                            
-                        __instance.SetDraggedAmount(newAmount);
-                        // LogScrollAction(itemData.Quantity, newAmount, itemData.Quantity);
-                    }
-                }
-                else if (Input.GetMouseButtonUp(0))
+                leftClickCachedSlot = __instance.HoveredSlot?.assignedSlot;
+                ItemInstance itemInstance = leftClickCachedSlot?.ItemInstance;
+                ItemData itemData = itemInstance?.GetItemData();
+
+                if (leftClickCachedSlot != null && itemData != null)
                 {
-                    leftClickCachedSlot = null;
+                    int newAmount = (itemData.Quantity == 1) ? 1 
+                    : RoundUp 
+                        ? (int)Mathf.Ceil(itemData.Quantity / 2f)
+                        : (int)Mathf.Floor(itemData.Quantity / 2f);
+                        
+                    __instance.SetDraggedAmount(newAmount);
+                    // LogScrollAction(itemData.Quantity, newAmount, itemData.Quantity);
                 }
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {                
+                leftClickCachedSlot = null;
             }
         }
 
     private static void HandleWheelSplit(ItemUIManager __instance)
     {
+        bool flag = wheelCachedSlot?.ItemInstance?.GetItemData().ID.ToLower() == "cash";
         if (Input.GetMouseButtonDown(1))
         {
             wheelCachedSlot = __instance.HoveredSlot?.assignedSlot;
@@ -59,10 +59,9 @@ namespace Splitter
             wheelCachedSlot = null;
         }
 
-        if ((!Input.GetKey(SplitKey)) 
-            || !wheelRightClickHeld)
+        if (!Input.GetKey(SplitKey) || !wheelRightClickHeld)
             return;
-
+        
         float scroll = Input.mouseScrollDelta.y;
         if (Mathf.Abs(scroll) < 0.01f) return;
 
@@ -74,6 +73,7 @@ namespace Splitter
         int step = SplitStep;
 
         ItemInstance itemInstance = wheelCachedSlot?.ItemInstance;
+        if (itemInstance is CashInstance) return;
         if (itemInstance?.GetItemData() is ItemData itemData)
         {
             if (itemData.Quantity <= 1)
@@ -102,11 +102,7 @@ namespace Splitter
         {
             return;
         }
-        __instance.SetDraggedAmount(newAmount);
-        
-        
-        // if (EnableDebugLogs)
-        //     LogScrollAction(currentAmount, newAmount, maxSplit);
+        __instance.SetDraggedAmount(newAmount);        
     }
         private static int CalculateNewAmount(int current, int direction, int step, int max)
         {
