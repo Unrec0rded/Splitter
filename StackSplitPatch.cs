@@ -39,7 +39,7 @@ namespace Splitter
                     // LogScrollAction(itemData.Quantity, newAmount, itemData.Quantity);
                 }
             }
-            else if (Input.GetMouseButtonUp(0))
+            else if (Input.GetMouseButtonUp(0) && !flag)
             {                
                 leftClickCachedSlot = null;
             }
@@ -48,19 +48,16 @@ namespace Splitter
     private static void HandleWheelSplit(ItemUIManager __instance)
     {
         bool flag = wheelCachedSlot?.ItemInstance?.GetItemData().ID.ToLower() == "cash";
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && Input.GetKey(SplitKey))
         {
             wheelCachedSlot = __instance.HoveredSlot?.assignedSlot;
             wheelRightClickHeld = true;
         }
-        else if (Input.GetMouseButtonUp(1))
+        else if (Input.GetMouseButtonUp(1) && !flag)
         {
             wheelRightClickHeld = false;
             wheelCachedSlot = null;
         }
-
-        if (!Input.GetKey(SplitKey) || !wheelRightClickHeld)
-            return;
         
         float scroll = Input.mouseScrollDelta.y;
         if (Mathf.Abs(scroll) < 0.01f) return;
