@@ -1,7 +1,7 @@
 ﻿using MelonLoader;
 using UnityEngine;
 
-[assembly: MelonInfo(typeof(Splitter.Core), "Splitter", "1.5", "Sinner2001", null)]
+[assembly: MelonInfo(typeof(Splitter.Core), "Splitter", "1.7", "Sinner2001", null)]
 [assembly: MelonGame("TVGS", "Schedule I")]
 
 namespace Splitter

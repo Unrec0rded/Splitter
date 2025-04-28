@@ -25,29 +25,34 @@ namespace Splitter
             if (__instance == null) return;
 
             bool flag = wheelCachedSlot?.ItemInstance?.GetItemData().ID.ToLower() == "cash";
-            if (Input.GetMouseButtonDown(0) && Input.GetKey(SplitKey) && !flag)
+            if (Input.GetMouseButtonDown(0) && !flag)
             {
                 leftClickCachedSlot = __instance.HoveredSlot?.assignedSlot;
-                if (leftClickCachedSlot == null) return;
-
-                ItemInstance itemInstance = leftClickCachedSlot.ItemInstance;
-                if (itemInstance == null || itemInstance is CashInstance) return;
-
-                ItemData itemData = itemInstance.GetItemData();
-                if (itemData == null) return;
-
-                int newAmount = (itemData.Quantity == 1) 
-                    ? 1 
-                    : RoundUp 
-                        ? Mathf.CeilToInt(itemData.Quantity / 2f) 
-                        : Mathf.FloorToInt(itemData.Quantity / 2f);
-
-                __instance.SetDraggedAmount(newAmount);
+                LeftClickHeld = true;
             }
             else if (Input.GetMouseButtonUp(0) || flag)
             {                
                 leftClickCachedSlot = null;
+                LeftClickHeld = false;
             }
+
+            if(!Input.GetKey(SplitKey)) return;
+
+            if (leftClickCachedSlot == null) return;
+
+            ItemInstance itemInstance = leftClickCachedSlot.ItemInstance;
+            if (itemInstance == null || itemInstance is CashInstance) return;
+
+            ItemData itemData = itemInstance.GetItemData();
+            if (itemData == null) return;
+
+            int newAmount = (itemData.Quantity == 1) 
+                ? 1 
+                : RoundUp 
+                    ? Mathf.CeilToInt(itemData.Quantity / 2f) 
+                    : Mathf.FloorToInt(itemData.Quantity / 2f);
+
+            __instance.SetDraggedAmount(newAmount);
         }
 
         private static void HandleWheelSplit(ItemUIManager __instance)
@@ -55,7 +60,7 @@ namespace Splitter
             if (__instance == null) return;
 
             bool flag = wheelCachedSlot?.ItemInstance?.GetItemData().ID.ToLower() == "cash";
-            if (Input.GetMouseButtonDown(1) && Input.GetKey(SplitKey) && !flag)
+            if (Input.GetMouseButtonDown(1) && !flag)
             {
                 wheelCachedSlot = __instance.HoveredSlot?.assignedSlot;
                 wheelRightClickHeld = true;
@@ -65,13 +70,15 @@ namespace Splitter
                 wheelRightClickHeld = false;
                 wheelCachedSlot = null;
             }
+
+            if(!Input.GetKey(SplitKey)) return;
+
             float scroll = Input.mouseScrollDelta.y;
             if (Mathf.Abs(scroll) < 0.01f) return;
 
             int currentAmount = __instance.draggedAmount;
             if (currentAmount <= 0) return;
 
-            // Validasi wheelCachedSlot dan ItemInstance
             if (wheelCachedSlot == null || wheelCachedSlot.ItemInstance == null)
             {
                 return;
@@ -149,7 +156,7 @@ namespace Splitter
         
         private static ItemSlot wheelCachedSlot;
         private static bool wheelRightClickHeld;
+        private static bool LeftClickHeld;
         
-        // private static MelonLogger.Instance Logger;
     }
 }
